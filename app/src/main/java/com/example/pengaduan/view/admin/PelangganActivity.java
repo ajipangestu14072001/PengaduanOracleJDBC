@@ -57,7 +57,7 @@ public class PelangganActivity extends AppCompatActivity {
             try {
                 connection = OracleConnection.getConnection();
 
-                String query = "SELECT ID, NAMA_LENGKAP, USERNAME, PASSWORD, ROLE, REAL_ID FROM ACCOUNT WHERE ROLE = 'USER'";
+                String query = "SELECT ID, NAMA_LENGKAP, USERNAME, PASSWORD, ROLE FROM ACCOUNT WHERE ROLE = 'USER'";
                 statement = connection.prepareStatement(query);
                 resultSet = statement.executeQuery();
 
@@ -67,9 +67,8 @@ public class PelangganActivity extends AppCompatActivity {
                     String username = resultSet.getString("USERNAME");
                     String password = resultSet.getString("PASSWORD");
                     String role = resultSet.getString("ROLE");
-                    String realId = resultSet.getString("REAL_ID");
 
-                    User user = new User(id, namaLengkap, username, password, role, realId);
+                    User user = new User(id, namaLengkap, username, password, role);
                     accountList.add(user);
                 }
 

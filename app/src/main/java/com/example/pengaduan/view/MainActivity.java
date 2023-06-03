@@ -111,10 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 while (resultSet.next()) {
                     String id = resultSet.getString("ID");
                     String namaLengkap = resultSet.getString("NAMA_LENGKAP");
-                    String idReal = resultSet.getString("REAL_ID");
                     SharedPrefManager.setNamaLengkap(this, namaLengkap);
                     SharedPrefManager.setIdPelanggan(this, id);
-                    SharedPrefManager.setRealId(this, idReal);
 
                 }
             } catch (SQLException e) {

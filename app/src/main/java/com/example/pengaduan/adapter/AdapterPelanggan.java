@@ -74,7 +74,7 @@ public class AdapterPelanggan extends RecyclerView.Adapter<AdapterPelanggan.List
     public void onBindViewHolder(ListViewHolder holder, int position) {
         User user = list.get(position);
         holder.nama.setText(user.getNamaLengkap());
-        holder.jenis.setText(user.getRealId());
+        holder.jenis.setText(user.getId());
         holder.deskripsi.setText(user.getUsername());
         Glide.with(holder.itemView.getContext())
                 .load("https://www.pngall.com/wp-content/uploads/5/Vector-Checklist-PNG-HD-Image.png")

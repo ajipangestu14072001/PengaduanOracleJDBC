@@ -16,7 +16,10 @@ import com.example.pengaduan.service.OracleConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class RealIdActivity extends AppCompatActivity {
@@ -57,18 +60,32 @@ public class RealIdActivity extends AppCompatActivity {
             return;
         }
 
+        String[] idArray = ids.split(",");
+        Set<String> uniqueIds = new HashSet<>();
+        for (String id : idArray) {
+            String idPelanggan = DEFAULT_PREFIX + id.trim();
+
+            if (!isIdPelangganExists(idPelanggan)) {
+                uniqueIds.add(idPelanggan);
+            }
+        }
+
+        if (uniqueIds.isEmpty()) {
+            runOnUiThread(() -> Toast.makeText(this, "Semua ID Pelanggan sudah ada", Toast.LENGTH_SHORT).show());
+            return;
+        }
+
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = OracleConnection.getConnection();
 
-            String[] idArray = ids.split(",");
-            for (String id : idArray) {
-                String query = "INSERT INTO REALID (ID, ID_REAL, ID_PELANGGAN, NAMA_KARYAWAN) VALUES (?, ?, ?, ?)";
+            for (String uniqueId : uniqueIds) {
+                String query = "INSERT INTO REALID (ID, ID_PELANGGAN, NAMA_PELANGGAN, NAMA_KARYAWAN) VALUES (?, ?, ?, ?)";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, generateID());
-                statement.setString(2, DEFAULT_PREFIX + id.trim());
+                statement.setString(2, uniqueId);
                 statement.setString(3, "");
                 statement.setString(4, karyawan);
 
@@ -99,6 +116,36 @@ public class RealIdActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private boolean isIdPelangganExists(String idPelanggan) {
+        Connection connection;
+        PreparedStatement statement;
+        ResultSet resultSet;
+        boolean exists = false;
+
+        try {
+            connection = OracleConnection.getConnection();
+
+            String query = "SELECT COUNT(*) FROM REALID WHERE ID_PELANGGAN = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, idPelanggan);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                exists = count > 0;
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return exists;
     }
 
     private String generateID() {

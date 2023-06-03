@@ -62,14 +62,6 @@ public class SharedPrefManager {
         return getSharedPreference(context).getString(USERNAME, "");
     }
 
-    public static void setRealId(Context context, String realId) {
-        editor(context, REAL_ID, realId);
-    }
-
-    public static String getRealId(Context context) {
-        return getSharedPreference(context).getString(REAL_ID, "");
-    }
-
     public static void setRole(Context context, String role) {
         editor(context, ROLE, role);
     }

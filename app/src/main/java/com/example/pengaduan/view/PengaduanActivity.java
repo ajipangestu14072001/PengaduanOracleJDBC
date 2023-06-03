@@ -80,7 +80,7 @@ public class PengaduanActivity extends AppCompatActivity {
         binding.date.setText(tanggalSekarang);
         binding.runningText.setSelected(true);
         nama = SharedPrefManager.getNamaLengkap(this);
-        ID = SharedPrefManager.getRealId(this);
+        ID = SharedPrefManager.getIdPelanggan(this);
         binding.namaLengkap.setText(nama);
         binding.idPelanggan.setText(ID);
         setSupportActionBar(binding.toolbar);

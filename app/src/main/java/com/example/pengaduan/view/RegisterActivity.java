@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
-private ActivityRegisterBinding binding;
+    private ActivityRegisterBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,25 +36,13 @@ private ActivityRegisterBinding binding;
             if (TextUtils.isEmpty(username) || TextUtils.isEmpty(namaLengkap) || TextUtils.isEmpty(password)) {
                 Toast.makeText(RegisterActivity.this, "Harap isi semua field", Toast.LENGTH_SHORT).show();
             } else {
-                boolean idRealExists = checkRealIdExistence(idPelanggan);
-                if (!idRealExists) {
-                    runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "ID_REAL tidak valid", Toast.LENGTH_SHORT).show());
-                    return;
-                }
-
-                String realId = getRealIdFromTable(idPelanggan);
-                if (realId != null) {
-                    User user = new User();
-                    user.setId(idPelanggan);
-                    user.setUsername(username);
-                    user.setNamaLengkap(namaLengkap);
-                    user.setPassword(password);
-                    user.setRole("USER");
-                    user.setRealId(realId);
-                    registerUser(user);
-                } else {
-                    runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "ID Sudah Digunakan", Toast.LENGTH_SHORT).show());
-                }
+                User user = new User();
+                user.setId(idPelanggan);
+                user.setUsername(username);
+                user.setNamaLengkap(namaLengkap);
+                user.setPassword(password);
+                user.setRole("USER");
+                registerUser(user);
             }
         }).start());
 
@@ -62,7 +50,7 @@ private ActivityRegisterBinding binding;
 
     private void registerUser(User user) {
         Connection connection;
-        String sql = "INSERT INTO ACCOUNT (ID, NAMA_LENGKAP, USERNAME, PASSWORD, ROLE, REAL_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ACCOUNT (ID, NAMA_LENGKAP, USERNAME, PASSWORD, ROLE) VALUES (?, ?, ?, ?, ?)";
 
         boolean idRealExists = checkRealIdExistence(user.getId());
         if (!idRealExists) {
@@ -73,19 +61,17 @@ private ActivityRegisterBinding binding;
         try {
             connection = OracleConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
-            String id = generateID();
-            statement.setString(1,id );
+            statement.setString(1, user.getId());
             statement.setString(2, user.getNamaLengkap());
             statement.setString(3, user.getUsername());
             statement.setString(4, user.getPassword());
             statement.setString(5, user.getRole());
-            statement.setString(6, user.getRealId());
 
             int rowsInserted = statement.executeUpdate();
 
             if (rowsInserted > 0) {
                 runOnUiThread(() -> {
-                    updateIdPelangganInRealId(user.getId(), id);
+                    updateIdPelangganInRealId(user.getId(), user.getNamaLengkap());
                     Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -98,6 +84,7 @@ private ActivityRegisterBinding binding;
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "ID Sudah Digunakan", Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -110,7 +97,7 @@ private ActivityRegisterBinding binding;
         try {
             connection = OracleConnection.getConnection();
 
-            String query = "SELECT COUNT(*) FROM REALID WHERE ID_REAL = ?";
+            String query = "SELECT COUNT(*) FROM REALID WHERE ID_PELANGGAN = ?";
             statement = connection.prepareStatement(query);
             statement.setString(1, idReal);
             resultSet = statement.executeQuery();
@@ -131,36 +118,6 @@ private ActivityRegisterBinding binding;
         return exists;
     }
 
-    private String getRealIdFromTable(String idPelanggan) {
-
-        Connection connection;
-        PreparedStatement statement;
-        ResultSet resultSet;
-        String realId = null;
-
-        try {
-            connection = OracleConnection.getConnection();
-
-            String query = "SELECT ID_REAL FROM REALID WHERE ID_PELANGGAN = ? OR ID_PELANGGAN IS NULL";
-            statement = connection.prepareStatement(query);
-            statement.setString(1, idPelanggan);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                realId = resultSet.getString("ID_REAL");
-            }
-
-            resultSet.close();
-            statement.close();
-            connection.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return realId;
-    }
-
     private void updateIdPelangganInRealId(String idReal, String idPelanggan) {
         new Thread(() -> {
             Connection connection;
@@ -169,7 +126,7 @@ private ActivityRegisterBinding binding;
             try {
                 connection = OracleConnection.getConnection();
 
-                String query = "UPDATE REALID SET ID_PELANGGAN = ? WHERE ID_REAL = ?";
+                String query = "UPDATE REALID SET NAMA_PELANGGAN = ? WHERE ID_PELANGGAN = ?";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, idPelanggan);
                 statement.setString(2, idReal);
@@ -184,7 +141,4 @@ private ActivityRegisterBinding binding;
         }).start();
     }
 
-    private String generateID() {
-        return UUID.randomUUID().toString();
-    }
 }

@@ -36,7 +36,7 @@ private ActivityAccountBinding binding;
                 resultSet = statement.executeQuery("SELECT * FROM ACCOUNT WHERE USERNAME = '" + name + "'");
 
                 while (resultSet.next()) {
-                    String id = resultSet.getString("REAL_ID");
+                    String id = resultSet.getString("ID");
                     String namaLengkap = resultSet.getString("NAMA_LENGKAP");
                     String username = resultSet.getString("USERNAME");
                     String password = resultSet.getString("PASSWORD");
