@@ -24,7 +24,7 @@ public class RealIdActivity extends AppCompatActivity {
     private EditText karyawanEditText;
     private ActivityRealIdBinding binding;
 
-    private static final String DEFAULT_PREFIX = "KlikLapor";
+    private static final String DEFAULT_PREFIX = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

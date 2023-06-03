@@ -45,7 +45,7 @@ private ActivityRegisterBinding binding;
                 String realId = getRealIdFromTable(idPelanggan);
                 if (realId != null) {
                     User user = new User();
-                    user.setId("KlikLapor"+idPelanggan);
+                    user.setId(idPelanggan);
                     user.setUsername(username);
                     user.setNamaLengkap(namaLengkap);
                     user.setPassword(password);
