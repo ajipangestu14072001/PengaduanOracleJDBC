@@ -42,10 +42,10 @@ public class RealIdActivity extends AppCompatActivity {
     }
 
     private void insertRealId() {
-        String id = idEditText.getText().toString().trim();
+        String ids = idEditText.getText().toString().trim();
         String karyawan = karyawanEditText.getText().toString().trim();
 
-        if (TextUtils.isEmpty(id)) {
+        if (TextUtils.isEmpty(ids)) {
             idEditText.setError("ID harus diisi");
             idEditText.requestFocus();
             return;
@@ -63,21 +63,22 @@ public class RealIdActivity extends AppCompatActivity {
         try {
             connection = OracleConnection.getConnection();
 
-            String query = "INSERT INTO REALID (ID, ID_REAL, ID_PELANGGAN, NAMA_KARYAWAN) VALUES (?, ?, ?, ?)";
-            statement = connection.prepareStatement(query);
-            statement.setString(1, generateID());
-            statement.setString(2, DEFAULT_PREFIX+id);
-            statement.setString(3, "");
-            statement.setString(4, karyawan);
+            String[] idArray = ids.split(",");
+            for (String id : idArray) {
+                String query = "INSERT INTO REALID (ID, ID_REAL, ID_PELANGGAN, NAMA_KARYAWAN) VALUES (?, ?, ?, ?)";
+                statement = connection.prepareStatement(query);
+                statement.setString(1, generateID());
+                statement.setString(2, DEFAULT_PREFIX + id.trim());
+                statement.setString(3, "");
+                statement.setString(4, karyawan);
 
-            int rowsInserted = statement.executeUpdate();
+                statement.executeUpdate();
+            }
 
-            if (rowsInserted > 0) {
-                runOnUiThread(() -> Toast.makeText(this, "Real ID berhasil ditambahkan", Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> {
+                Toast.makeText(this, "Real ID berhasil ditambahkan", Toast.LENGTH_SHORT).show();
                 clearForm();
-            } else {
-                runOnUiThread(() -> Toast.makeText(this, "Gagal menambahkan Real ID", Toast.LENGTH_SHORT).show());
-        }
+            });
 
         } catch (SQLException e) {
             e.printStackTrace();
