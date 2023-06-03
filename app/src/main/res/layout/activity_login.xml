@@ -21,7 +21,7 @@
             android:layout_height="150dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/kliklapor"
             android:text="Welcome Back!"
             android:textStyle="bold" />
 

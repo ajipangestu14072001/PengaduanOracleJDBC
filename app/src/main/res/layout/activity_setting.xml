@@ -124,7 +124,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card3"
+        android:id="@+id/cardRealId"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
@@ -135,6 +135,68 @@
         app:layout_constraintEnd_toEndOf="@+id/card2"
         app:layout_constraintStart_toStartOf="@+id/card2"
         app:layout_constraintTop_toBottomOf="@+id/card2">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/round_verified_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="74dp"
+            android:text="Real ID"
+            android:textSize="18sp" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardPelanggan"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#F2F2F2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardRealId"
+        app:layout_constraintStart_toStartOf="@+id/cardRealId"
+        app:layout_constraintTop_toBottomOf="@+id/cardRealId">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/round_groups_3_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="74dp"
+            android:text="Master Pelanggan"
+            android:textSize="18sp" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#F2F2F2"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardPelanggan"
+        app:layout_constraintStart_toStartOf="@+id/cardPelanggan"
+        app:layout_constraintTop_toBottomOf="@+id/cardPelanggan">
 
         <ImageView
             android:layout_width="25dp"

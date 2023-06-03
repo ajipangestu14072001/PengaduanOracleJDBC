@@ -212,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Titik Lokasi" />
+                android:text="Alamat Lengkap" />
 
             <EditText
                 android:id="@+id/location"
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_bg"
-                android:hint="Titik Lokasi"
+                android:hint="Alamat Lengkap"
                 android:padding="10dp" />
 
             <TextView

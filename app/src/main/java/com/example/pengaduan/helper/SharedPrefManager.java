@@ -14,6 +14,7 @@ public class SharedPrefManager {
     public static final String SP_PENGADUAN_APP = "Pengaduan";
     public static final String SP_SUDAH_LOGIN = "IsLogin";
     public static final String ROLE = "Role";
+    public static final String REAL_ID = "RealId";
 
     public SharedPrefManager(Context context) {
         sp = context.getSharedPreferences(SP_PENGADUAN_APP, Context.MODE_PRIVATE);
@@ -59,6 +60,14 @@ public class SharedPrefManager {
 
     public static String getUsername(Context context) {
         return getSharedPreference(context).getString(USERNAME, "");
+    }
+
+    public static void setRealId(Context context, String realId) {
+        editor(context, REAL_ID, realId);
+    }
+
+    public static String getRealId(Context context) {
+        return getSharedPreference(context).getString(REAL_ID, "");
     }
 
     public static void setRole(Context context, String role) {

@@ -13,13 +13,19 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/kliklapor"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/kliklapor"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pengaduan"
         android:windowSoftInputMode="adjustPan|adjustResize"
         tools:targetApi="31">
+        <activity
+            android:name=".view.admin.PelangganActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.RealIdActivity"
+            android:exported="false" />
         <activity
             android:name=".view.admin.RiwayatTanggapanActivity"
             android:exported="false" />

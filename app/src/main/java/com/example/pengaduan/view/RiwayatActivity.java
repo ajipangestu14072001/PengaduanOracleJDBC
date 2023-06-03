@@ -46,7 +46,7 @@ public class RiwayatActivity extends AppCompatActivity implements FetchRecyclerV
         binding.recyclerView.setAdapter(riwayatAdapter);
 
         new Thread(() -> {
-            String idPelanggan = SharedPrefManager.getIdPelanggan(this);
+            String idPelanggan = SharedPrefManager.getRealId(this);
             fetchData(idPelanggan);
         }).start();
 

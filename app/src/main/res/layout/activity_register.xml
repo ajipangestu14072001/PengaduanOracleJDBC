@@ -48,7 +48,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_bg"
             android:hint="ID Pelanggan"
-            android:enabled="false"
             android:inputType="textEmailAddress"
             android:padding="12dp" />
 
