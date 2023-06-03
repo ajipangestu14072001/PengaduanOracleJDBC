@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.PengaduanActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:navigationIcon="@drawable/round_arrow_back_ios_24">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:text="Input Data Pengaduan"
+                    android:textColor="#FF3D9AD6"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:background="#FF3D9AD6"
+                    android:padding="5dp"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageMsg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/round_info_24" />
+
+                        <TextView
+                            android:id="@+id/runningText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ellipsize="marquee"
+                            android:fadingEdge="horizontal"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:maxLines="1"
+                            android:paddingTop="2dp"
+                            android:scrollHorizontally="true"
+                            android:singleLine="true"
+                            android:text="Mohon untuk tidak memberikan aduan palsu atau informasi yang tidak benar terkait dengan suatu peristiwa atau kejadian. Adalah penting untuk memberikan laporan yang akurat dan jujur agar dapat memelihara integritas sistem aduan dan kepercayaan publik."
+                            android:textColor="#ffffff"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/relative1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp">
+
+                    <RelativeLayout
+                        android:id="@+id/rp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#DCDCDC">
+
+                        <ImageView
+                            android:id="@+id/imgview"
+                            android:layout_width="350dp"
+                            android:layout_height="350dp"
+                            android:scaleType="centerCrop" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Jenis Aduan" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/kategoriAduan"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edittext_bg"
+                        android:spinnerMode="dropdown" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:src="@drawable/ic_spinner" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="ID Pelanggan" />
+
+            <EditText
+                android:id="@+id/idPelanggan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="ID Pelanggan"
+                android:enabled="false"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Nama Lengkap" />
+
+            <EditText
+                android:id="@+id/namaLengkap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="Nama Lengkap"
+                android:enabled="false"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Tanggal" />
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:enabled="false"
+                android:hint="Tanggal"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Titik Lokasi" />
+
+            <EditText
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="Titik Lokasi"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Kondisi Device" />
+
+            <EditText
+                android:id="@+id/deviceCondition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="Kondisi Device"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Deskripsi" />
+
+            <EditText
+                android:id="@+id/desc"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_bg"
+                android:hint="Deskripsi"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Kirim Pengaduan"
+                android:textAllCaps="false"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Button.Square" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/action1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        app:fab_addButtonSize="normal">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/round_image_24"
+            app:fab_size="normal" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/round_local_florist_24"
+            app:fab_size="normal" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</RelativeLayout>
