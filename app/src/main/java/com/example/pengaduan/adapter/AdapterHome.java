@@ -19,6 +19,8 @@ import com.example.pengaduan.view.AspirasiActivity;
 import com.example.pengaduan.view.PengaduanActivity;
 import com.example.pengaduan.view.RiwayatActivity;
 import com.example.pengaduan.view.SettingActivity;
+import com.example.pengaduan.view.admin.PelangganActivity;
+import com.example.pengaduan.view.admin.RealIdActivity;
 
 public class AdapterHome extends RecyclerView.Adapter<AdapterHome.MyAdapter> {
     private final Context context;
@@ -111,7 +113,7 @@ public class AdapterHome extends RecyclerView.Adapter<AdapterHome.MyAdapter> {
                 });
             }
         } else if (SharedPrefManager.getRole(context).equals("ADMIN")) {
-            if (position == 0) {
+            if (position == 1) {
                 holder.image.setImageResource(R.drawable.imagebase);
                 holder.image1.setImageResource(R.drawable.round_data_object_24);
                 holder.back.setBackgroundColor(Color.parseColor("#F236883A"));
@@ -129,7 +131,7 @@ public class AdapterHome extends RecyclerView.Adapter<AdapterHome.MyAdapter> {
                     }
                 });
             }
-            if (position == 1) {
+            if (position == 3) {
                 holder.image.setImageResource(R.drawable.imagebase);
                 holder.image1.setImageResource(R.drawable.round_data_object_24);
                 holder.back.setBackgroundColor(Color.parseColor("#F2EEAA45"));
@@ -147,6 +149,42 @@ public class AdapterHome extends RecyclerView.Adapter<AdapterHome.MyAdapter> {
                     }
                 });
             }
+            if (position == 2) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#F2AF4576"));
+                holder.text.setText("Real ID");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, RealIdActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, RealIdActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            if (position == 0) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#E6E53935"));
+                holder.text.setText("Pelanggan");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, PelangganActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, PelangganActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
         }
     }
 
@@ -155,7 +193,7 @@ public class AdapterHome extends RecyclerView.Adapter<AdapterHome.MyAdapter> {
         if (SharedPrefManager.getRole(context).equals("USER")) {
             return 4;
         } else if (SharedPrefManager.getRole(context).equals("ADMIN")) {
-            return 2;
+            return 4;
         }
         return 0;
     }

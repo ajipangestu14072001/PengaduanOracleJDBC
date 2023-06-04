@@ -14,17 +14,15 @@ import com.example.pengaduan.view.admin.RealIdActivity;
 
 public class SettingActivity extends AppCompatActivity {
     private ActivitySettingBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        String role = SharedPrefManager.getRole(this);
-        if(role.equals("USER")){
-            binding.cardRealId.setVisibility(View.GONE);
-            binding.cardPelanggan.setVisibility(View.GONE);
-        }
+        binding.cardRealId.setVisibility(View.GONE);
+        binding.cardPelanggan.setVisibility(View.GONE);
 
         binding.cardPelanggan.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PelangganActivity.class);
@@ -51,6 +49,7 @@ public class SettingActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
