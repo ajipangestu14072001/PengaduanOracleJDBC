@@ -285,6 +285,21 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                 android:textColor="#808080" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Tanggapan"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tanggapanDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dummy"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textColor="#808080" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

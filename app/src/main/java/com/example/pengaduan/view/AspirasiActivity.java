@@ -108,6 +108,7 @@ public class AspirasiActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     private String generateID() {
         return UUID.randomUUID().toString();
     }

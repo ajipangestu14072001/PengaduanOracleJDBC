@@ -36,8 +36,8 @@ public class AdapterPelanggan extends RecyclerView.Adapter<AdapterPelanggan.List
         TextView nama;
         TextView jenis;
         TextView deskripsi;
-
         ImageView imgPhoto;
+        ImageView delete;
 
         public ListViewHolder(View itemView) {
             super(itemView);
@@ -45,7 +45,16 @@ public class AdapterPelanggan extends RecyclerView.Adapter<AdapterPelanggan.List
             jenis = itemView.findViewById(R.id.aspirasi);
             deskripsi = itemView.findViewById(R.id.deskripsi);
             imgPhoto = itemView.findViewById(R.id.imgDummy);
+            delete = itemView.findViewById(R.id.delete);
             itemView.setOnLongClickListener(this);
+            delete.setOnClickListener(view -> {
+                if (mListener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        mListener.onItemLongClick(position);
+                    }
+                }
+            });
 
         }
 
@@ -79,6 +88,7 @@ public class AdapterPelanggan extends RecyclerView.Adapter<AdapterPelanggan.List
         Glide.with(holder.itemView.getContext())
                 .load("https://www.pngall.com/wp-content/uploads/5/Vector-Checklist-PNG-HD-Image.png")
                 .into(holder.imgPhoto);
+
     }
 
     @Override

@@ -17,16 +17,26 @@ import java.util.ArrayList;
 public class AdapterAspirasi extends RecyclerView.Adapter<AdapterAspirasi.ListViewHolder> {
     private ArrayList<Aspirasi> list;
 
+    private OnItemDeleteClickListener deleteClickListener;
+
     public AdapterAspirasi(ArrayList<Aspirasi> list) {
         this.list = list;
+    }
+
+    public interface OnItemDeleteClickListener {
+        void onItemDeleteClick(int position);
+    }
+
+    public void setOnItemDeleteClickListener(OnItemDeleteClickListener listener) {
+        this.deleteClickListener = listener;
     }
 
     public static class ListViewHolder extends RecyclerView.ViewHolder {
         TextView nama;
         TextView jenis;
         TextView deskripsi;
-
         ImageView imgPhoto;
+        ImageView deleteIcon;
 
         public ListViewHolder(View itemView) {
             super(itemView);
@@ -34,6 +44,7 @@ public class AdapterAspirasi extends RecyclerView.Adapter<AdapterAspirasi.ListVi
             jenis = itemView.findViewById(R.id.aspirasi);
             deskripsi = itemView.findViewById(R.id.deskripsi);
             imgPhoto = itemView.findViewById(R.id.imgDummy);
+            deleteIcon = itemView.findViewById(R.id.delete);
 
         }
     }
@@ -53,6 +64,11 @@ public class AdapterAspirasi extends RecyclerView.Adapter<AdapterAspirasi.ListVi
         Glide.with(holder.itemView.getContext())
                 .load("https://www.pngall.com/wp-content/uploads/5/Vector-Checklist-PNG-HD-Image.png")
                 .into(holder.imgPhoto);
+        holder.deleteIcon.setOnClickListener(v -> {
+            if (deleteClickListener != null) {
+                deleteClickListener.onItemDeleteClick(position);
+            }
+        });
     }
 
     @Override

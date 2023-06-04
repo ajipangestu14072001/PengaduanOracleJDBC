@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.example.pengaduan.R;
@@ -42,6 +44,13 @@ public class RiwayatAspirasiActivity extends AppCompatActivity {
         adapter = new AdapterAspirasi(aspirasiList);
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemDeleteClickListener(new AdapterAspirasi.OnItemDeleteClickListener() {
+            @Override
+            public void onItemDeleteClick(int position) {
+                showDeleteConfirmationDialog(position);
+            }
+        });
+
         new Thread(this::fetchDataFromDatabase).start();
 
     }
@@ -73,6 +82,45 @@ public class RiwayatAspirasiActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void showDeleteConfirmationDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Hapus Data");
+        builder.setMessage("Apakah Anda yakin ingin menghapus data ini?");
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteDataFromDatabase(position);
+            }
+        });
+        builder.setNegativeButton("Tidak", null);
+        builder.show();
+    }
+
+    private void deleteDataFromDatabase(int position) {
+        new Thread(() -> {
+            Aspirasi aspirasi = aspirasiList.get(position);
+        String id = aspirasi.getId();
+
+        try {
+            Connection connection = OracleConnection.getConnection();
+            Statement statement = connection.createStatement();
+            String query = "DELETE FROM ASPIRASI WHERE ID = '" + id + "'";
+            statement.executeUpdate(query);
+
+            statement.close();
+            connection.close();
+
+            runOnUiThread(() -> {
+                aspirasiList.remove(position);
+                adapter.notifyItemRemoved(position);
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        }).start();
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {

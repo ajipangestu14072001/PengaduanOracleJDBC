@@ -146,4 +146,13 @@ public class MainActivity extends AppCompatActivity {
             );
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String role = SharedPrefManager.getRole(this);
+        if (role.equals("USER")){
+            binding.lihatAspirasi.setVisibility(View.GONE);
+        }
+    }
 }

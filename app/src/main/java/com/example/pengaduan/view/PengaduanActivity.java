@@ -138,8 +138,8 @@ public class PengaduanActivity extends AppCompatActivity {
             return;
         }
 
-        progressDialog.setTitle("Data is Uploading...");
-        progressDialog.setMessage("Transfer Data Ke Server");
+        progressDialog.setTitle("Data Aduan Sedang di Proses...");
+        progressDialog.setMessage("Mengirim Aduanr");
         progressDialog.setIndeterminate(false);
         progressDialog.show();
 

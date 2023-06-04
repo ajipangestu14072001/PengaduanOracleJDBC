@@ -21,7 +21,7 @@ import java.sql.SQLException;
 
 public class TanggapanActivity extends AppCompatActivity {
     private ActivityTanggapanBinding binding;
-    private final String[] jenisPengaduan = {"Menunggu", "Di Proses", "Selesai"};
+    private final String[] jenisPengaduan = {"Menunggu", "Di Proses", "Selesai", "Di Tolak"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

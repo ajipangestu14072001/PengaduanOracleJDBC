@@ -3,6 +3,7 @@ package com.example.pengaduan.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.pengaduan.R;
@@ -25,6 +26,11 @@ private ActivityAccountBinding binding;
         setSupportActionBar(binding.toolbar);
         String name = SharedPrefManager.getUsername(this);
 
+        String role = SharedPrefManager.getRole(this);
+        if(role.equals("ADMIN")){
+            binding.card.setVisibility(View.GONE);
+        }
+
         new Thread(() -> {
             Connection connection;
             Statement statement;
@@ -39,8 +45,6 @@ private ActivityAccountBinding binding;
                     String id = resultSet.getString("ID");
                     String namaLengkap = resultSet.getString("NAMA_LENGKAP");
                     String username = resultSet.getString("USERNAME");
-                    String password = resultSet.getString("PASSWORD");
-                    String role = resultSet.getString("ROLE");
                     binding.idPelanggan.setText(id);
                     binding.namaLengkap.setText(namaLengkap);
                     binding.username.setText(username);

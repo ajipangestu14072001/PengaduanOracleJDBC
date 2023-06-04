@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pengaduan.R;
@@ -36,83 +37,127 @@ public class AdapterHome extends RecyclerView.Adapter<AdapterHome.MyAdapter> {
 
     @Override
     public void onBindViewHolder(MyAdapter holder, int position) {
-        if (position == 0) {
-            holder.image.setImageResource(R.drawable.imagebase);
-            holder.image1.setImageResource(R.drawable.round_data_object_24);
-            holder.back.setBackgroundColor(Color.parseColor("#E6E53935"));
-            holder.text.setText("Pengaduan");
-            holder.back.setOnClickListener(v -> {
-                if (!sharedPrefManager.sPSudahLogin()) {
-                    context.startActivity(
-                            new Intent(context, PengaduanActivity.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
-                    );
-                } else {
-                    Intent intent = new Intent(context, PengaduanActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            });
-        }
-        if (position == 1) {
-            holder.image.setImageResource(R.drawable.imagebase);
-            holder.image1.setImageResource(R.drawable.round_data_object_24);
-            holder.back.setBackgroundColor(Color.parseColor("#F236883A"));
-            holder.text.setText("Riwayat");
-            holder.back.setOnClickListener(v -> {
-                if (!sharedPrefManager.sPSudahLogin()) {
-                    context.startActivity(
-                            new Intent(context, RiwayatActivity.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
-                    );
-                } else {
-                    Intent intent = new Intent(context, RiwayatActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            });
-        }
-        if (position == 2) {
-            holder.image.setImageResource(R.drawable.imagebase);
-            holder.image1.setImageResource(R.drawable.round_data_object_24);
-            holder.back.setBackgroundColor(Color.parseColor("#F2AF4576"));
-            holder.text.setText("Aspirasi");
-            holder.back.setOnClickListener(v -> {
-                if (!sharedPrefManager.sPSudahLogin()) {
-                    context.startActivity(
-                            new Intent(context, AspirasiActivity.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
-                    );
-                } else {
-                    Intent intent = new Intent(context, AspirasiActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            });
-        }
-        if (position == 3) {
-            holder.image.setImageResource(R.drawable.imagebase);
-            holder.image1.setImageResource(R.drawable.round_data_object_24);
-            holder.back.setBackgroundColor(Color.parseColor("#F2EEAA45"));
-            holder.text.setText("Setting");
-            holder.back.setOnClickListener(v -> {
-                if (!sharedPrefManager.sPSudahLogin()) {
-                    context.startActivity(
-                            new Intent(context, SettingActivity.class)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
-                    );
-                } else {
-                    Intent intent = new Intent(context, SettingActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            });
+        if (SharedPrefManager.getRole(context).equals("USER")) {
+            if (position == 0) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#E6E53935"));
+                holder.text.setText("Pengaduan");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, PengaduanActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, PengaduanActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            if (position == 1) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#F236883A"));
+                holder.text.setText("Riwayat");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, RiwayatActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, RiwayatActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            if (position == 2) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#F2AF4576"));
+                holder.text.setText("Aspirasi");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, AspirasiActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, AspirasiActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            if (position == 3) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#F2EEAA45"));
+                holder.text.setText("Setting");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, SettingActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, SettingActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+        } else if (SharedPrefManager.getRole(context).equals("ADMIN")) {
+            if (position == 0) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#F236883A"));
+                holder.text.setText("Riwayat");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, RiwayatActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, RiwayatActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            if (position == 1) {
+                holder.image.setImageResource(R.drawable.imagebase);
+                holder.image1.setImageResource(R.drawable.round_data_object_24);
+                holder.back.setBackgroundColor(Color.parseColor("#F2EEAA45"));
+                holder.text.setText("Setting");
+                holder.back.setOnClickListener(v -> {
+                    if (!sharedPrefManager.sPSudahLogin()) {
+                        context.startActivity(
+                                new Intent(context, SettingActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                        );
+                    } else {
+                        Intent intent = new Intent(context, SettingActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        if (SharedPrefManager.getRole(context).equals("USER")) {
+            return 4;
+        } else if (SharedPrefManager.getRole(context).equals("ADMIN")) {
+            return 2;
+        }
+        return 0;
     }
 
     public static class MyAdapter extends RecyclerView.ViewHolder {

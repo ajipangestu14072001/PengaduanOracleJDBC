@@ -47,6 +47,11 @@ public class DetailRiwayatActivity extends AppCompatActivity {
         binding.kendalaDesc.setText(data.getDeskripsi());
         binding.keadaanDetail.setText(data.getKondisiDevice());
         binding.statusDetail.setText(data.getStatus());
+        if(data.getTanggapan().equals("Belum Ada Tanggapan")){
+            binding.tanggapanDesc.setText("-");
+        }else {
+            binding.tanggapanDesc.setText(data.getTanggapan());
+        }
         Glide.with(this)
                 .load(data.getPathPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
