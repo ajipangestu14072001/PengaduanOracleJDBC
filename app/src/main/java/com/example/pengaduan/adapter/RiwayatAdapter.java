@@ -62,6 +62,7 @@ public class RiwayatAdapter extends RecyclerView.Adapter<RiwayatAdapter.ProductV
         Glide.with(holder.image.getContext())
                 .asBitmap()
                 .load(currentTime.getPathPhoto())
+                .error(R.drawable.kliklapor)
                 .into(holder.image);
         holder.mainL.setOnClickListener(view -> listener.onIntent(currentTime));
         updateDetailButtonText(holder.button, currentTime.getStatus());
@@ -76,6 +77,9 @@ public class RiwayatAdapter extends RecyclerView.Adapter<RiwayatAdapter.ProductV
                 break;
             case "Selesai":
                 detailText.setText("Selesai");
+                break;
+            case "Di Tolak":
+                detailText.setText("Di Tolak");
                 break;
             default:
                 detailText.setText("Menunggu");

@@ -96,10 +96,10 @@ public class RiwayatActivity extends AppCompatActivity implements FetchRecyclerV
             String query;
 
             if (role.equals("ADMIN")) {
-                query = "SELECT * FROM PENGADUAN";
+                query = "SELECT * FROM PENGADUAN ORDER BY TANGGAL DESC";
                 statement = connection.prepareStatement(query);
             } else {
-                query = "SELECT * FROM PENGADUAN WHERE ID_PELANGGAN = ?";
+                query = "SELECT * FROM PENGADUAN WHERE ID_PELANGGAN = ? ORDER BY TANGGAL DESC";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, idPelanggan);
             }

@@ -65,6 +65,7 @@ public class TanggapanAdapter extends RecyclerView.Adapter<TanggapanAdapter.Prod
                 .into(holder.image);
         holder.mainL.setOnClickListener(view -> listener.onIntent(currentTime));
         updateDetailButtonText(holder.button, currentTime.getStatus());
+        System.out.println(currentTime.getStatus()+ "INI STATUS");
         holder.button.setOnClickListener(view -> listener.onItemClicked(view, currentTime));
     }
 
@@ -76,6 +77,9 @@ public class TanggapanAdapter extends RecyclerView.Adapter<TanggapanAdapter.Prod
                 break;
             case "Selesai":
                 detailText.setText("Selesai");
+                break;
+            case "Di Tolak":
+                detailText.setText("Di Tolak");
                 break;
             default:
                 detailText.setText("Menunggu");

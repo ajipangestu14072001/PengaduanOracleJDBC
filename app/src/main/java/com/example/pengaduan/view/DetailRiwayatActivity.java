@@ -47,13 +47,14 @@ public class DetailRiwayatActivity extends AppCompatActivity {
         binding.kendalaDesc.setText(data.getDeskripsi());
         binding.keadaanDetail.setText(data.getKondisiDevice());
         binding.statusDetail.setText(data.getStatus());
-        if(data.getTanggapan().equals("Belum Ada Tanggapan")){
+        if(data.getTanggapan() == null){
             binding.tanggapanDesc.setText("-");
         }else {
             binding.tanggapanDesc.setText(data.getTanggapan());
         }
         Glide.with(this)
                 .load(data.getPathPhoto())
+                .error(R.drawable.kliklapor)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.imgHistory);
         binding.beriTanggapan.setOnClickListener(view -> {

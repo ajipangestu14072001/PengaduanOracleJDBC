@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -132,7 +133,7 @@ public class PengaduanActivity extends AppCompatActivity {
 
     private String getFileExtension(Uri uri) {
         String extension = null;
-        if (getContentResolver().getType(uri) != null) {
+        if (uri != null && getContentResolver().getType(uri) != null) {
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             extension = mime.getExtensionFromMimeType(getContentResolver().getType(uri));
         }
@@ -140,24 +141,97 @@ public class PengaduanActivity extends AppCompatActivity {
     }
 
     private void uploadImageFileToFirebaseStorage() {
-        if (imageUri == null) {
-            Toast.makeText(this, "Poto Tidak Boleh Kosong", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         progressDialog.setTitle("Data Aduan Sedang di Proses...");
         progressDialog.setMessage("Mengirim Aduan");
         progressDialog.setIndeterminate(false);
         progressDialog.show();
 
-        StorageReference storageReference2 = storageReference.child(storagePath + System.currentTimeMillis() + "." + getFileExtension(imageUri));
-        storageReference2.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-            String key = databaseReference.push().getKey();
-            progressDialog.dismiss();
+        if (imageUri != null) {
+            StorageReference storageReference2 = storageReference.child(storagePath + System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            storageReference2.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+                progressDialog.dismiss();
 
-            Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
-            while (!downloadUrlTask.isSuccessful()) ;
-            Uri downloadUrl = downloadUrlTask.getResult();
+                Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!downloadUrlTask.isSuccessful()) ;
+                Uri downloadUrl = downloadUrlTask.getResult();
+                new Thread(() -> {
+                    id = generateID();
+                    jenisAduan = binding.kategoriAduan.getSelectedItem().toString().trim();
+                    namaLengkap = binding.namaLengkap.getText().toString().trim();
+                    tanggal = binding.date.getText().toString().trim();
+                    titikLokasi = binding.location.getText().toString().trim();
+                    kondisiDevice = binding.deviceCondition.getText().toString().trim();
+                    deskripsi = binding.desc.getText().toString().trim();
+                    status = "Menunggu";
+                    idPelanggan = binding.idPelanggan.getText().toString().trim();
+                    tanggapan = "";
+                    pathPhoto = Objects.requireNonNull(downloadUrl).toString();
+                    try {
+                        InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+                        byte[] buffer = new byte[1024];
+                        int length;
+                        while ((length = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, length);
+                        }
+
+                        byte[] imageBytes = outputStream.toByteArray();
+
+                        inputStream.close();
+                        outputStream.close();
+
+                        Aduan aduan = new Aduan();
+                        aduan.setId(id);
+                        aduan.setJenisAduan(jenisAduan);
+                        aduan.setNamaLengkap(namaLengkap);
+                        aduan.setTanggal(tanggal);
+                        aduan.setTitikLokasi(titikLokasi);
+                        aduan.setKondisiDevice(kondisiDevice);
+                        aduan.setDeskripsi(deskripsi);
+                        aduan.setPathPhoto(pathPhoto);
+                        aduan.setStatus(status);
+                        aduan.setTanggapan(tanggapan);
+                        aduan.setIdPelanggan(idPelanggan);
+                        aduan.setRawImage(imageBytes);
+                        aduanPelanggan(aduan);
+
+                        aduanPelanggan(aduan);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+                Aduan imageUploadInfo = new Aduan(
+                        generateID(),
+                        binding.kategoriAduan.getSelectedItem().toString().trim(),
+                        binding.idPelanggan.getText().toString().trim(),
+                        binding.namaLengkap.getText().toString().trim(),
+                        binding.date.getText().toString().trim(),
+                        binding.location.getText().toString().trim(),
+                        binding.deviceCondition.getText().toString().trim(),
+                        binding.desc.getText().toString().trim(),
+                        Objects.requireNonNull(downloadUrl).toString(),
+                        "Menunggu",
+                        ""
+                );
+                String key = databaseReference.push().getKey();
+                DatabaseReference databaseReference = PengaduanActivity.this.databaseReference;
+                databaseReference.child("ListAduan" + key).setValue(imageUploadInfo)
+                        .addOnSuccessListener(aVoid -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(PengaduanActivity.this, "Pengaduan Behasil di Kirim", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(PengaduanActivity.this, "Terjadi kesalahan saat mengirim pengaduan", Toast.LENGTH_SHORT).show();
+                        });
+            }).addOnFailureListener(exc -> {
+                progressDialog.dismiss();
+                Toast.makeText(PengaduanActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            }).addOnProgressListener(snapshot -> progressDialog.setTitle("Data is Uploading..."));
+        } else {
             new Thread(() -> {
                 id = generateID();
                 jenisAduan = binding.kategoriAduan.getSelectedItem().toString().trim();
@@ -168,65 +242,51 @@ public class PengaduanActivity extends AppCompatActivity {
                 deskripsi = binding.desc.getText().toString().trim();
                 status = "Menunggu";
                 idPelanggan = binding.idPelanggan.getText().toString().trim();
-                tanggapan = "Belum Ada Tanggapan";
-                pathPhoto = Objects.requireNonNull(downloadUrl).toString();
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                tanggapan = "";
+                pathPhoto = "";
 
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, length);
-                    }
+                Aduan aduan = new Aduan();
+                aduan.setId(id);
+                aduan.setJenisAduan(jenisAduan);
+                aduan.setNamaLengkap(namaLengkap);
+                aduan.setTanggal(tanggal);
+                aduan.setTitikLokasi(titikLokasi);
+                aduan.setKondisiDevice(kondisiDevice);
+                aduan.setDeskripsi(deskripsi);
+                aduan.setPathPhoto(pathPhoto);
+                aduan.setStatus(status);
+                aduan.setTanggapan(tanggapan);
+                aduan.setIdPelanggan(idPelanggan);
+                aduanPelanggan(aduan);
 
-                    byte[] imageBytes = outputStream.toByteArray();
-
-                    inputStream.close();
-                    outputStream.close();
-
-                    Aduan aduan = new Aduan();
-                    aduan.setId(id);
-                    aduan.setJenisAduan(jenisAduan);
-                    aduan.setNamaLengkap(namaLengkap);
-                    aduan.setTanggal(tanggal);
-                    aduan.setTitikLokasi(titikLokasi);
-                    aduan.setKondisiDevice(kondisiDevice);
-                    aduan.setDeskripsi(deskripsi);
-                    aduan.setPathPhoto(pathPhoto);
-                    aduan.setStatus(status);
-                    aduan.setTanggapan(tanggapan);
-                    aduan.setIdPelanggan(idPelanggan);
-                    aduan.setRawImage(imageBytes);
-                    aduanPelanggan(aduan);
-
-                    aduanPelanggan(aduan);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Aduan imageUploadInfo = new Aduan(
+                        generateID(),
+                        binding.kategoriAduan.getSelectedItem().toString().trim(),
+                        binding.idPelanggan.getText().toString().trim(),
+                        binding.namaLengkap.getText().toString().trim(),
+                        binding.date.getText().toString().trim(),
+                        binding.location.getText().toString().trim(),
+                        binding.deviceCondition.getText().toString().trim(),
+                        binding.desc.getText().toString().trim(),
+                        "",
+                        "Menunggu",
+                        ""
+                );
+                String key = databaseReference.push().getKey();
+                DatabaseReference databaseReference = PengaduanActivity.this.databaseReference;
+                databaseReference.child("ListAduan" + key).setValue(imageUploadInfo)
+                        .addOnSuccessListener(aVoid -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(PengaduanActivity.this, "Pengaduan Behasil di Kirim", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                            Toast.makeText(PengaduanActivity.this, "Terjadi kesalahan saat mengirim pengaduan", Toast.LENGTH_SHORT).show();
+                        });
             }).start();
-            Aduan imageUploadInfo = new Aduan(
-                    generateID(),
-                    binding.kategoriAduan.getSelectedItem().toString().trim(),
-                    binding.idPelanggan.getText().toString().trim(),
-                    binding.namaLengkap.getText().toString().trim(),
-                    binding.date.getText().toString().trim(),
-                    binding.location.getText().toString().trim(),
-                    binding.deviceCondition.getText().toString().trim(),
-                    binding.desc.getText().toString().trim(),
-                    Objects.requireNonNull(downloadUrl).toString(),
-                    "Menunggu",
-                    "Belum Ada Tanggapan"
-            );
-            DatabaseReference databaseReference = PengaduanActivity.this.databaseReference;
-            databaseReference.child("ListAduan" + key).setValue(imageUploadInfo);
-            Toast.makeText(PengaduanActivity.this, "Pengaduan Behasil di Kirim", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(exc -> {
-            progressDialog.dismiss();
-            Toast.makeText(PengaduanActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
-        }).addOnProgressListener(snapshot -> progressDialog.setTitle("Data is Uploading..."));
+        }
     }
+
 
     private void aduanPelanggan(Aduan aduan) {
         Connection connection;
@@ -246,8 +306,12 @@ public class PengaduanActivity extends AppCompatActivity {
             statement.setString(9, aduan.getStatus());
             statement.setString(10, aduan.getIdPelanggan());
             statement.setString(11, aduan.getTanggapan());
-            InputStream inputStream = new ByteArrayInputStream(aduan.getRawImage());
-            statement.setBinaryStream(12, inputStream);
+            if (aduan.getRawImage() != null) {
+                InputStream inputStream = new ByteArrayInputStream(aduan.getRawImage());
+                statement.setBinaryStream(12, inputStream);
+            } else {
+                statement.setNull(12, Types.BINARY);
+            }
 
             int rowsInserted = statement.executeUpdate();
 

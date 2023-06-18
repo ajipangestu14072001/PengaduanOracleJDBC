@@ -56,7 +56,7 @@ public class RiwayatTanggapanActivity extends AppCompatActivity implements Fetch
         try {
             connection = OracleConnection.getConnection();
 
-            String query = "SELECT * FROM PENGADUAN WHERE STATUS != ?";
+            String query = "SELECT * FROM PENGADUAN WHERE STATUS != ? ORDER BY TANGGAL DESC";
             statement = connection.prepareStatement(query);
             statement.setString(1, "Menunggu");
             resultSet = statement.executeQuery();
