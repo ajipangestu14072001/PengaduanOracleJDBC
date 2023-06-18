@@ -14,7 +14,6 @@ public class Aduan implements Parcelable {
     private String titikLokasi;
     private String kondisiDevice;
     private String deskripsi;
-    private String pathPhoto;
     private String status;
     private String tanggapan;
 
@@ -23,7 +22,7 @@ public class Aduan implements Parcelable {
     public Aduan() {
     }
 
-    public Aduan(String id, String jenisAduan, String idPelanggan, String namaLengkap, String tanggal, String titikLokasi, String kondisiDevice, String deskripsi, String pathPhoto, String status, String tanggapan) {
+    public Aduan(String id, String jenisAduan, String idPelanggan, String namaLengkap, String tanggal, String titikLokasi, String kondisiDevice, String deskripsi, String status, String tanggapan,  byte[] rawImage) {
         this.id = id;
         this.jenisAduan = jenisAduan;
         this.idPelanggan = idPelanggan;
@@ -32,9 +31,9 @@ public class Aduan implements Parcelable {
         this.titikLokasi = titikLokasi;
         this.kondisiDevice = kondisiDevice;
         this.deskripsi = deskripsi;
-        this.pathPhoto = pathPhoto;
         this.status = status;
         this.tanggapan = tanggapan;
+        this.rawImage = rawImage;
     }
 
     protected Aduan(Parcel in) {
@@ -46,7 +45,6 @@ public class Aduan implements Parcelable {
         titikLokasi = in.readString();
         kondisiDevice = in.readString();
         deskripsi = in.readString();
-        pathPhoto = in.readString();
         status = in.readString();
         tanggapan = in.readString();
         rawImage = in.createByteArray();
@@ -128,14 +126,6 @@ public class Aduan implements Parcelable {
         this.deskripsi = deskripsi;
     }
 
-    public String getPathPhoto() {
-        return pathPhoto;
-    }
-
-    public void setPathPhoto(String pathPhoto) {
-        this.pathPhoto = pathPhoto;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -175,7 +165,6 @@ public class Aduan implements Parcelable {
         dest.writeString(titikLokasi);
         dest.writeString(kondisiDevice);
         dest.writeString(deskripsi);
-        dest.writeString(pathPhoto);
         dest.writeString(status);
         dest.writeString(tanggapan);
         dest.writeByteArray(rawImage);

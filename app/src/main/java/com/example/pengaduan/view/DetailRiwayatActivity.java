@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
@@ -52,11 +54,18 @@ public class DetailRiwayatActivity extends AppCompatActivity {
         }else {
             binding.tanggapanDesc.setText(data.getTanggapan());
         }
-        Glide.with(this)
-                .load(data.getPathPhoto())
-                .error(R.drawable.kliklapor)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.imgHistory);
+        byte[] imageData = data.getRawImage();
+
+        if (imageData != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+            Glide.with(this)
+                    .asBitmap()
+                    .load(bitmap)
+                    .into(binding.imgHistory);
+        } else {
+            binding.imgHistory.setImageResource(R.drawable.kliklapor);
+        }
+
         binding.beriTanggapan.setOnClickListener(view -> {
             Intent intent1 = new Intent(getApplicationContext(), TanggapanActivity.class);
             intent1.putExtra("data", data);

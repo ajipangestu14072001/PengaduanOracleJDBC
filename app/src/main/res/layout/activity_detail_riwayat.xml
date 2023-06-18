@@ -71,7 +71,7 @@
                     android:id="@+id/imgHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/imagebase" />
 
             </androidx.cardview.widget.CardView>

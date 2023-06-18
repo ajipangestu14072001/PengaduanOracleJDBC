@@ -17,6 +17,7 @@ import com.example.pengaduan.model.Aduan;
 import com.example.pengaduan.service.OracleConnection;
 import com.example.pengaduan.view.admin.RiwayatTanggapanActivity;
 
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -114,11 +115,16 @@ public class RiwayatActivity extends AppCompatActivity implements FetchRecyclerV
                 String titikLokasi = resultSet.getString("TITIK_LOKASI");
                 String kondisiDevice = resultSet.getString("KONDISI_DEVICE");
                 String deskripsi = resultSet.getString("DESKRIPSI");
-                String pathPhoto = resultSet.getString("PHOTO");
                 String status = resultSet.getString("STATUS");
                 String tanggapan = resultSet.getString("TANGGAPAN");
+                byte[] rawImageBytes = null;
+                Blob rawImageBlob = resultSet.getBlob("RAW_IMAGE");
+                if (rawImageBlob != null) {
+                    rawImageBytes = rawImageBlob.getBytes(1, (int) rawImageBlob.length());
+                }
 
-                Aduan aduan = new Aduan(id, jenisAduan, idPelanggan, namaLengkap, tanggal, titikLokasi, kondisiDevice, deskripsi, pathPhoto, status, tanggapan);
+
+                Aduan aduan = new Aduan(id, jenisAduan, idPelanggan, namaLengkap, tanggal, titikLokasi, kondisiDevice, deskripsi, status, tanggapan, rawImageBytes);
                 aduanList.add(aduan);
             }
 
