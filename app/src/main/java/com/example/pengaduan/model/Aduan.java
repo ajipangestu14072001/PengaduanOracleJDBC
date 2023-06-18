@@ -3,6 +3,8 @@ package com.example.pengaduan.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.sql.Blob;
+
 public class Aduan implements Parcelable {
     private String id;
     private String jenisAduan;
@@ -15,6 +17,8 @@ public class Aduan implements Parcelable {
     private String pathPhoto;
     private String status;
     private String tanggapan;
+
+    private byte[] rawImage;
 
     public Aduan() {
     }
@@ -45,6 +49,7 @@ public class Aduan implements Parcelable {
         pathPhoto = in.readString();
         status = in.readString();
         tanggapan = in.readString();
+        rawImage = in.createByteArray();
     }
 
     public static final Creator<Aduan> CREATOR = new Creator<Aduan>() {
@@ -152,6 +157,14 @@ public class Aduan implements Parcelable {
         return 0;
     }
 
+    public void setRawImage(byte[] rawImage) {
+        this.rawImage = rawImage;
+    }
+
+    public byte[] getRawImage() {
+        return rawImage;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -165,5 +178,6 @@ public class Aduan implements Parcelable {
         dest.writeString(pathPhoto);
         dest.writeString(status);
         dest.writeString(tanggapan);
+        dest.writeByteArray(rawImage);
     }
 }

@@ -29,6 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -139,7 +146,7 @@ public class PengaduanActivity extends AppCompatActivity {
         }
 
         progressDialog.setTitle("Data Aduan Sedang di Proses...");
-        progressDialog.setMessage("Mengirim Aduanr");
+        progressDialog.setMessage("Mengirim Aduan");
         progressDialog.setIndeterminate(false);
         progressDialog.show();
 
@@ -163,19 +170,41 @@ public class PengaduanActivity extends AppCompatActivity {
                 idPelanggan = binding.idPelanggan.getText().toString().trim();
                 tanggapan = "Belum Ada Tanggapan";
                 pathPhoto = Objects.requireNonNull(downloadUrl).toString();
-                Aduan aduan = new Aduan();
-                aduan.setId(id);
-                aduan.setJenisAduan(jenisAduan);
-                aduan.setNamaLengkap(namaLengkap);
-                aduan.setTanggal(tanggal);
-                aduan.setTitikLokasi(titikLokasi);
-                aduan.setKondisiDevice(kondisiDevice);
-                aduan.setDeskripsi(deskripsi);
-                aduan.setPathPhoto(pathPhoto);
-                aduan.setStatus(status);
-                aduan.setTanggapan(tanggapan);
-                aduan.setIdPelanggan(idPelanggan);
-                aduanPelanggan(aduan);
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, length);
+                    }
+
+                    byte[] imageBytes = outputStream.toByteArray();
+
+                    inputStream.close();
+                    outputStream.close();
+
+                    Aduan aduan = new Aduan();
+                    aduan.setId(id);
+                    aduan.setJenisAduan(jenisAduan);
+                    aduan.setNamaLengkap(namaLengkap);
+                    aduan.setTanggal(tanggal);
+                    aduan.setTitikLokasi(titikLokasi);
+                    aduan.setKondisiDevice(kondisiDevice);
+                    aduan.setDeskripsi(deskripsi);
+                    aduan.setPathPhoto(pathPhoto);
+                    aduan.setStatus(status);
+                    aduan.setTanggapan(tanggapan);
+                    aduan.setIdPelanggan(idPelanggan);
+                    aduan.setRawImage(imageBytes);
+                    aduanPelanggan(aduan);
+
+                    aduanPelanggan(aduan);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }).start();
             Aduan imageUploadInfo = new Aduan(
                     generateID(),
@@ -201,7 +230,7 @@ public class PengaduanActivity extends AppCompatActivity {
 
     private void aduanPelanggan(Aduan aduan) {
         Connection connection;
-        String sql = "INSERT INTO PENGADUAN (ID, JENIS_ADUAN, NAMA_LENGKAP, TANGGAL, TITIK_LOKASI, KONDISI_DEVICE, DESKRIPSI, PHOTO, STATUS, ID_PELANGGAN, TANGGAPAN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO PENGADUAN (ID, JENIS_ADUAN, NAMA_LENGKAP, TANGGAL, TITIK_LOKASI, KONDISI_DEVICE, DESKRIPSI, PHOTO, STATUS, ID_PELANGGAN, TANGGAPAN, RAW_IMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             connection = OracleConnection.getConnection();
@@ -217,6 +246,8 @@ public class PengaduanActivity extends AppCompatActivity {
             statement.setString(9, aduan.getStatus());
             statement.setString(10, aduan.getIdPelanggan());
             statement.setString(11, aduan.getTanggapan());
+            InputStream inputStream = new ByteArrayInputStream(aduan.getRawImage());
+            statement.setBinaryStream(12, inputStream);
 
             int rowsInserted = statement.executeUpdate();
 
