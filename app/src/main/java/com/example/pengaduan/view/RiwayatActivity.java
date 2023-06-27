@@ -2,7 +2,9 @@ package com.example.pengaduan.view;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -117,12 +119,17 @@ public class RiwayatActivity extends AppCompatActivity implements FetchRecyclerV
                 String deskripsi = resultSet.getString("DESKRIPSI");
                 String status = resultSet.getString("STATUS");
                 String tanggapan = resultSet.getString("TANGGAPAN");
+                String pelangganID = resultSet.getString("ID_PELANGGAN");
                 byte[] rawImageBytes = null;
                 Blob rawImageBlob = resultSet.getBlob("RAW_IMAGE");
                 if (rawImageBlob != null) {
                     rawImageBytes = rawImageBlob.getBytes(1, (int) rawImageBlob.length());
                 }
 
+                SharedPreferences sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("idPelanggan", pelangganID);
+                editor.apply();
 
                 Aduan aduan = new Aduan(id, jenisAduan, idPelanggan, namaLengkap, tanggal, titikLokasi, kondisiDevice, deskripsi, status, tanggapan, rawImageBytes);
                 aduanList.add(aduan);

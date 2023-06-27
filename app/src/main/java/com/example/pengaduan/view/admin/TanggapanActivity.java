@@ -1,6 +1,8 @@
 package com.example.pengaduan.view.admin;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -32,13 +34,15 @@ public class TanggapanActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         Intent intent = getIntent();
         Aduan data = intent.getParcelableExtra("data");
+        SharedPreferences sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        String idPelanggan = sharedPreferences.getString("idPelanggan", "");
         binding.jenisAduan.setText(data.getJenisAduan());
         binding.namaLengkap.setText(data.getNamaLengkap());
         binding.location.setText(data.getTitikLokasi());
         binding.date.setText(data.getTanggal());
         binding.desc.setText(data.getDeskripsi());
         binding.deviceCondition.setText(data.getKondisiDevice());
-        binding.idPelanggan.setText(data.getIdPelanggan());
+        binding.idPelanggan.setText(idPelanggan);
         binding.tanggapan.setText(data.getTanggapan());
         ArrayAdapter<String> kategori = new ArrayAdapter<>(this, com.google.android.material.R.layout.support_simple_spinner_dropdown_item, jenisPengaduan);
         binding.statusAduan.setAdapter(kategori);
